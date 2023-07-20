@@ -15,7 +15,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Read about the data from the website where it is staged.  Then form three regression models; Model1 is SIMS~ARM, Model2 is SIMS~GRIP, and Model3 is SIMS~ARM+GRIP. For each model find a 95% prediction interval of SIMS given a value of 94  for GRIP and 88 for ARM. Compare Model1 with Model3 using anova. Write it up in a markdown document, push the project up to your github account and submit it back to canvas as link. 
 
- 
 
 
 ```{r include=FALSE}
@@ -31,20 +30,53 @@ data <- read.csv(file="https://onlinestatbook.com/case_studies_rvls/physical_str
 
 ```
 
+# Introduction
+
+We predict a simulated score based on arm and grip strength. We will find 3 models and compare them. The response variable is numerical, and the explanatory variable is numerical, so we use the Num~Num helper file.
+
 ## Model 1 SIM~ARMS
 
-### scatterplot
+## Results
 
-### Numerical results
+### Graphical Results
+
+```{r}
+model.1 <- lm(SIMS~ARM,data=data)
+plot(SIMS~ARM,data=data)
+abline(model.1, col='red')
+```
+
+This graph demonstrates as arm strength increases, the simulated strength increases as well.
 
 
-### Inferential  (Build model.1)
+### Numerical Results
 
-#### Predict at target point
+```{r}
+cor(SIMS~ARM,data=data)
+```
 
+The correlation is 0.69, which shows that arm strength is related to simulated strength score.
 
-#### scatterplot with model fit
-  
+### Inferential Results
+
+```{r}
+model.1 <- lm(SIMS~ARM,data=data)
+summary.lm(model.1)
+```
+
+Both the $b_0$ (Intercept) and the $b_1$ (Coefficient) are significant due to 
+the small p-value, as demonstrated above.
+
+"Both the intercept and the coefficient of ARM
+
+### Prediction Interval
+```{r}
+newdata = data.frame(ARM=88, GRIP=94)
+predict(model.1, newdata, interval="predict")
+```
+
+The 95% prediction interval is from -1.7 to 3.1 for SIM score.
+
 
 ## Model 2 SIM~GRIP
 
