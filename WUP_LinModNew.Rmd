@@ -80,26 +80,59 @@ The 95% prediction interval is from -1.7 to 3.1 for SIM score.
 
 ## Model 2 SIM~GRIP
 
-### Now add in scatterplot
+## Results
+
+### Graphical Results
+
+```{r}
+model.2 <- lm(SIMS~GRIP,data=data)
+plot(SIMS~GRIP,data=data)
+abline(model.2, col='red')
+```
+
+This scatter plot demonstrates that as the grip strength score increases, the simulated strength score increases.
 
 
 ### Numerical results 
 
+```{r}
+cor(SIMS~GRIP,data=data)
+```
+
+The correlation is 0.64, which shows that grip strength is related to simulated strength score.
+
 
 ### Inferential  (Build model.2)
-  
 
-#### predict model.2 at target point
+```{r}
+model.2 <- lm(SIMS~GRIP,data=data)
+summary.lm(model.2)
+```
+
+Both the $b_0$ (Intercept) and the $b_1$ (Coefficient) are significant due to 
+the small p-value, as demonstrated above.
+
+#### Prediction Interval
+
+```{r}
+newdata = data.frame(ARM=88, GRIP=94)
+predict(model.2, newdata, interval="predict")
+```
+
+**description of model 2 prediction at target point. (95% target interval)
 
 #### now add the model fit to our plot for model.2
   
 
-
 ## Model 3 SIM~ARM+GRIP
+
+## Results
 
 ### Numerical results (cor)
 
-`
+
+
+### Graphical Results
   
 ### Inferential  (Build 2-dimentional model.3)
 
