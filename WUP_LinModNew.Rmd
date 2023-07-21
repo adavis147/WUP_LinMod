@@ -34,6 +34,8 @@ data <- read.csv(file="https://onlinestatbook.com/case_studies_rvls/physical_str
 
 We predict a simulated score based on arm and grip strength. We will find 3 models and compare them. The response variable is numerical, and the explanatory variable is numerical, so we use the Num~Num helper file.
 
+Linear regression 
+
 ## Model 1 SIM~ARMS
 
 ## Results
@@ -109,8 +111,7 @@ model.2 <- lm(SIMS~GRIP,data=data)
 summary.lm(model.2)
 ```
 
-Both the $b_0$ (Intercept) and the $b_1$ (Coefficient) are significant due to 
-the small p-value, as demonstrated above.
+Based on the results, I reject the $H_0$ because both the $b_0$ (Intercept) and the $b_1$ (Coefficient) prove to be significant due to the small p-value, as demonstrated above.
 
 #### Prediction Interval
 
@@ -119,25 +120,36 @@ newdata = data.frame(ARM=88, GRIP=94)
 predict(model.2, newdata, interval="predict")
 ```
 
-**description of model 2 prediction at target point. (95% target interval)
-
-#### now add the model fit to our plot for model.2
+The 95% prediction interval is from -1.7 to 3.1 for SIM score. Which proves that the results may vary between these to values.
   
 
 ## Model 3 SIM~ARM+GRIP
 
 ## Results
 
-### Numerical results (cor)
+### Numerical Results
 
 
+```{r}
+cor(SIMS~ARM+GRIP,data=data)
+```
 
-### Graphical Results
-  
+
 ### Inferential  (Build 2-dimentional model.3)
 
-#### predict model.3 at target point
-  
+```{r}
+model.3 <- lm(SIMS~ARM+GRIP,data=data)
+summary(model.3)
+```
+
+As arm plus grip strength goes up, the simulation indicates that the SIM goes up as well, we reject the null hypothesis because the p-value is so small. Both coefficients are significantly different than 0.
+
+### Prediction Interval
+
+```{r}
+newdata = data.frame(ARM=88, GRIP=94)
+predict(model.3, newdata, interval="predict")
+```
 
 ## Comparing nested models ANOVA Test
 
@@ -146,3 +158,18 @@ predict(model.2, newdata, interval="predict")
 
 ## Informally compare Model.1 with model.2
 
+```{r}
+anova(model.1, model.3)
+```
+
+The p-value .00000499, thus I reject the null hypothesis. Model 1 proves to be better than model two because the RSS for model 1 is smaller.
+
+```{r}
+anova(model.2, model.3)
+```
+
+Model three is smaller than the model two because the RSS for model three is  smaller.
+
+## Discussion and Conclusion
+
+In conclusion, model 3 is the best because it has a smaller RSS than both model 1 and model 2. Model 1 is better than model 2, but in order for it to be better, it would need a smaller RSS. In the end, we are rejecting the null hypothesis and model 3 is the best overall.
